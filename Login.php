@@ -17,8 +17,6 @@ $password = $jsonR['password'];
 $salt = "a059a744729dfc7a4b4845109f591029";
 $Data = new \stdClass();
 
-
-
 // Tell header for content-type is json format ----------------------------------------------------------------------------------------------
 header('Content-Type: application/json');
 
@@ -28,17 +26,17 @@ if ($username == '' || $password == '') {
     $Data->message = "Please fill all field";
 } else { // Get data from DB table ----------------------------------------------------------------------------------------------------------
     require_once('DBconnect.php');
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM users WHERE BINARY username='$username' AND BINARY password='$password'";
     $check = mysqli_fetch_array(mysqli_query($con, $sql));
 
     // Check already have in DB -------------------------------------------------------------------------------------------------------------
     if (isset($check)) {
-        $sql = "SELECT * FROM token_username WHERE username='$username'";
+        $sql = "SELECT * FROM token_username WHERE BINARY username='$username'";
         $check = mysqli_fetch_array(mysqli_query($con, $sql));
         if (isset($check)) {
             $date = new DateTime();
-            $token = md5($date->getTimestamp() . $username);
-            $sql = "UPDATE token_username SET token = '$token' WHERE username='$username'";
+            $token = md5($date->getTimestamp() . $username);                                        // Token = MD5(Timestamp + username)
+            $sql = "UPDATE token_username SET token = '$token' WHERE BINARY username='$username'";
             if ($con->query($sql) == TRUE) {
                 $Data->status = 200;
                 $Data->message = "Logged in!";

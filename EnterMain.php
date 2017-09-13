@@ -15,9 +15,19 @@ header('Content-Type: application/json');
 // Declare variables ------------------------------------------------------------------------------------------------------------------------
 $jsonR = $_SESSION['token'];
 
+require_once('CheckToken.php');
+if ($checkToken == 1) {
+    $username = $name;
+    require_once('DBconnect.php');
+    $sql = "SELECT username FROM users WHERE BINARY username = '$addUsername'";
+    $query = mysqli_query($con, $sql);
+    if ($query->num_rows == 1) {
 
+    }
+}
 
 // Close table DB ---------------------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
+session_write_close();
 
 ?>

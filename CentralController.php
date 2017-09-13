@@ -70,12 +70,13 @@ else if ($dataReceive->getModule() == "Friend") {
         require_once("AddFriend.php");
     }
 }
-// TODO:Module Setting -----------------------------------------------------------------------------------------------------------------------
-else if ($dataReceive->getModule() == "Setting") {
-    if ($dataReceive->getTarget() == "friendTabEnter") {
+// TODO:Module Other -----------------------------------------------------------------------------------------------------------------------
+else if ($dataReceive->getModule() == "Other") {
+    if ($dataReceive->getTarget() == "profileAccountDisplayName") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
-        require_once("EnterMain.php");
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("ChangeDisplayname.php");
     }
 }
 ?>
