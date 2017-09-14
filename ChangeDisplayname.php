@@ -22,16 +22,23 @@ $Data = new \stdClass();
 require_once('CheckToken.php');
 if ($checkToken == 1) {
     $username = $name;
-    require_once('DBconnect.php');
-    // Get display name
-    $sql = "UPDATE users SET displayName='$displayName' WHERE BINARY username='$username'";
-    if ($con->query($sql) == TRUE) {
-        $Data->status = 200;
-        $Data->message = "Change displayName successful.";
-    } else {
-        $Data->status = 500;
-        $Data->message = "Change fail.";
+//    $username = 'Test';
+    if($username == $displayName){
+            $Data->status = 401;
+            $Data->message = "Can't use username to displayname (none security)";
+    }else{
+        require_once('DBconnect.php');
+        // Get display name
+        $sql = "UPDATE users SET displayName = '$displayName' WHERE username = '$username'";
+        if ($con->query($sql) == TRUE) {
+            $Data->status = 200;
+            $Data->message = "Change displayName successful.";
+        } else {
+            $Data->status = 500;
+            $Data->message = "Change fail.";
+        }
     }
+
 } else {
     $Data->status = 400;
     $Data->message = "Wrong token.";

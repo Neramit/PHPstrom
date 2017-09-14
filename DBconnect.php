@@ -13,4 +13,4 @@ define('PASS','');
 define('DB','android');
 
 // Connect Database ------------------------------------------------------------------------------------------------------------------------
-$con = mysqli_connect(HOST,USER,PASS,DB) or die('Unable to Connect');
+$con = mysqli_connect(HOST,USER,PASS,DB) or die ('Connection failed' . mysqli_error());

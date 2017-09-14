@@ -14,8 +14,8 @@ $jsonR = $_SESSION['data'];
 $username = $jsonR['username'];
 $password = $jsonR['password'];
 /** Password with salt **/
-$salt = "a059a744729dfc7a4b4845109f591029";
 $Data = new \stdClass();
+$data = new \stdClass();
 
 // Tell header for content-type is json format ----------------------------------------------------------------------------------------------
 header('Content-Type: application/json');
@@ -27,22 +27,24 @@ if ($username == '' || $password == '') {
 } else { // Get data from DB table ----------------------------------------------------------------------------------------------------------
     require_once('DBconnect.php');
     $sql = "SELECT * FROM users WHERE BINARY username='$username' AND BINARY password='$password'";
-    $check = mysqli_fetch_array(mysqli_query($con, $sql));
-
+    $query = mysqli_query($con, $sql);
+    if ($query->num_rows == 1) {
+//        while ($row = mysqli_fetch_assoc($query)) {
     // Check already have in DB -------------------------------------------------------------------------------------------------------------
-    if (isset($check)) {
+//    if ($check->num_rows == 1) {
         $sql = "SELECT * FROM token_username WHERE BINARY username='$username'";
         $check = mysqli_fetch_array(mysqli_query($con, $sql));
         if (isset($check)) {
             $date = new DateTime();
             $token = md5($date->getTimestamp() . $username);                                        // Token = MD5(Timestamp + username)
+
             $sql = "UPDATE token_username SET token = '$token' WHERE BINARY username='$username'";
             if ($con->query($sql) == TRUE) {
                 $Data->status = 200;
                 $Data->message = "Logged in!";
-                $Data->data = $token;
+                $Data->data = $data;
             } else {
-                $Data->status = 401;
+                $Data->status = 402;
                 $Data->message = "Login fail";
             }
         } else {
@@ -53,12 +55,19 @@ if ($username == '' || $password == '') {
             if (mysqli_query($con, $sql)) {
                 $Data->status = 200;
                 $Data->message = "Logged in!";
-                $Data->data = $token;
             } else {
-                $Data->status = 401;
+                $Data->status = 402;
                 $Data->message = "Login fail";
             }
         }
+        $check = mysqli_fetch_assoc($query);
+        $data->token = $token;
+        $data->username = $username;
+        $data->email = $check["email"];
+        $data->displayName = $check["displayName"];
+        $data->displayPictureURL = $check["displayPictureURL"];
+        $data->displayPicturePath = $check["displayPicturePath"];
+        $Data->data = $data;
     } else {
         $Data->status = 401;
         $Data->message = "Wrong username or password";

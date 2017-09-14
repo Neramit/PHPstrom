@@ -13,18 +13,44 @@ date_default_timezone_set('Asia/Bangkok');
 header('Content-Type: application/json');
 
 // Declare variables ------------------------------------------------------------------------------------------------------------------------
-$jsonR = $_SESSION['token'];
+$token = $_SESSION['token'];
+$Data = new stdClass();
+$data = new \stdClass();
+$a = array();
+$i = 0;
 
 require_once('CheckToken.php');
 if ($checkToken == 1) {
     $username = $name;
     require_once('DBconnect.php');
-    $sql = "SELECT username FROM users WHERE BINARY username = '$addUsername'";
+    $sql = "SELECT * FROM friends WHERE BINARY ownerUsername = '$username' OR BINARY friendUsername = '$username'";
     $query = mysqli_query($con, $sql);
-    if ($query->num_rows == 1) {
-
+    if ($query->num_rows > 0) {
+        while ($check = $query->fetch_assoc()) {
+            $data->ownerUsername = $check["ownerUsername"];
+            $data->friendUsername = $check["friendUsername"];
+            $data->friendStatus = $check["friendStatus"];
+            $data->isFavorite = $check["isFavorite"];
+            $data->chatroomUID = $check["chatroomUID"];
+//            array_push($a,$data);
+            $a[$i] = $data;
+            $i++;
+        }
+        $Data->status = 200;
+        $Data->message = "Successful.";
+        $Data->data = $a;
+    }else{
+        $Data->status = 201;
+        $Data->message = "Don't have friend.";
     }
+}else{
+    $Data->status = 400;
+    $Data->message = "Wrong token.";
 }
+
+// Retrieve value json format to client ------------------------------------------------------------------------------------------------------------------------------
+$retrieve_json = json_encode($Data);
+echo $retrieve_json;
 
 // Close table DB ---------------------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
