@@ -37,7 +37,7 @@ if ($checkToken == 1) {
         $query = mysqli_query($con, $sql);
         if ($query->num_rows == 1) {
             // Check that ever Friend or not ? -------------------------------------------------------------------------------------------------------------------------------
-            $sql = "SELECT ownerUsername,friendUsername,friendStatus FROM friends WHERE ownerUsername='$username' AND friendUsername = '$addUsername'";
+            $sql = "SELECT ownerUsername,friendUsername,friendStatus FROM friends WHERE BINARY ownerUsername='$username' AND BINARY friendUsername = '$addUsername'";
             $query = mysqli_query($con, $sql);
             if ($query->num_rows == 1) {
                 while ($row = mysqli_fetch_assoc($query)) {
@@ -50,12 +50,12 @@ if ($checkToken == 1) {
                     }
                 }
             } else {
-                $sql = "SELECT ownerUsername, friendUsername, friendStatus FROM friends WHERE ownerUsername = '$addUsername' AND friendsUsername = '$username'";
+                $sql = "SELECT ownerUsername, friendUsername, friendStatus FROM friends WHERE BINARY ownerUsername = '$addUsername' AND BINARY friendUsername = '$username'";
                 $query = mysqli_query($con, $sql);
                 if ($query->num_rows == 1) {
                     while ($row = mysqli_fetch_assoc($query)) {
                         if ($row['friendStatus'] == 0) {
-                            $sql = "UPDATE friends SET friendStatus = 1 WHERE friendUsername = '$username' AND ownerUsername = '$addUsername'";
+                            $sql = "UPDATE friends SET friendStatus = 1 WHERE BINARY friendUsername = '$username' AND BINARY ownerUsername = '$addUsername'";
                             if ($con->query($sql) == TRUE) {
                                 $Data->status = 200;
                                 $Data->message = "You become friend now.";

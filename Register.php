@@ -36,7 +36,7 @@ if ($username == '' || $email == '' || $password == '') {
         $Data->message = "Already register.";
     } else {  // Input values to database -----------------------------------------------------------------------------------------------------
         $password = md5($salt . $password);
-        $sql = "INSERT INTO users (username,password,email) VALUES('$username','$password','$email')";
+        $sql = "INSERT INTO users (username,password,email,displayName) VALUES('$username','$password','$email','$username')";
 
         // Check for query succeed? ---------------------------------------------------------------------------------------------------------
         if (mysqli_query($con, $sql)) {
