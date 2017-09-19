@@ -57,7 +57,7 @@ if ($checkToken == 1) {
                         if ($row['friendStatus'] == 0) {
                             $sql = "UPDATE friends SET friendStatus = 1 WHERE BINARY friendUsername = '$username' AND BINARY ownerUsername = '$addUsername'";
                             if ($con->query($sql) == TRUE) {
-                                $Data->status = 200;
+                                $Data->status = 203;
                                 $Data->message = "You become friend now.";
                             } else {
                                 $Data->status = 500;
@@ -97,4 +97,3 @@ echo $retrieve_json;
 // Close table DB & session ------------------------------------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
 session_write_close();
-?>

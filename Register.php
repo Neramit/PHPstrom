@@ -48,10 +48,11 @@ if ($username == '' || $email == '' || $password == '') {
             $Data->message = "Fail to register.";
         }
     }
-    // Retrieve value json format to client --------------------------------------------------------------------------------------------------
-    $retrieve_json = json_encode($Data);
-    echo $retrieve_json;
-    // Close table DB & session -----------------------------------------------------------------------------------------------------------------
-    mysqli_close($con);
-    session_write_close();
 }
+
+// Retrieve value json format to client --------------------------------------------------------------------------------------------------
+$retrieve_json = json_encode($Data);
+echo $retrieve_json;
+// Close table DB & session -----------------------------------------------------------------------------------------------------------------
+mysqli_close($con);
+session_write_close();

@@ -29,9 +29,7 @@ if ($username == '' || $password == '') {
     $sql = "SELECT * FROM users WHERE BINARY username='$username' AND BINARY password='$password'";
     $query = mysqli_query($con, $sql);
     if ($query->num_rows == 1) {
-//        while ($row = mysqli_fetch_assoc($query)) {
     // Check already have in DB -------------------------------------------------------------------------------------------------------------
-//    if ($check->num_rows == 1) {
         $sql = "SELECT * FROM token_username WHERE BINARY username='$username'";
         $check = mysqli_fetch_array(mysqli_query($con, $sql));
         if (isset($check)) {
@@ -66,17 +64,17 @@ if ($username == '' || $password == '') {
         $data->email = $check["email"];
         $data->displayName = $check["displayName"];
         $data->displayPictureURL = $check["displayPictureURL"];
-        $data->displayPicturePath = $check["displayPicturePath"];
         $Data->data = $data;
     } else {
         $Data->status = 401;
         $Data->message = "Wrong username or password";
     }
-    // Retieve value json format to client --------------------------------------------------------------------------------------------------
-    $retrieve_json = json_encode($Data);
-    echo $retrieve_json;
-
-    // Close table DB & session -----------------------------------------------------------------------------------------------------------------
-    mysqli_close($con);
-    session_write_close();
 }
+
+// Retieve value json format to client --------------------------------------------------------------------------------------------------
+$retrieve_json = json_encode($Data);
+echo $retrieve_json;
+
+// Close table DB & session -----------------------------------------------------------------------------------------------------------------
+mysqli_close($con);
+session_write_close();

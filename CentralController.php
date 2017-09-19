@@ -77,6 +77,11 @@ else if ($dataReceive->getModule() == "Other") {
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("ChangeDisplayname.php");
+    }elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture"){
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("ChangeDisplayPicture.php");
     }
 }
 ?>

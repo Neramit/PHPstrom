@@ -23,7 +23,9 @@ require_once('CheckToken.php');
 if ($checkToken == 1) {
     $username = $name;
     require_once('DBconnect.php');
-    $sql = "SELECT * FROM friends WHERE BINARY ownerUsername = '$username' OR BINARY friendUsername = '$username'";
+    $sql = "SELECT * FROM friends INNER JOIN users ON friends.friendUsername=users.username";
+//    $sql = "SELECT * FROM friends INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID WHERE BINARY ownerUsername = '$username' OR BINARY friendUsername = '$username'";
+
     $query = mysqli_query($con, $sql);
     if ($query->num_rows > 0) {
         while ($check = $query->fetch_assoc()) {
@@ -32,6 +34,8 @@ if ($checkToken == 1) {
             $data->friendStatus = $check["friendStatus"];
             $data->isFavorite = $check["isFavorite"];
             $data->chatroomUID = $check["chatroomUID"];
+            $data->displayName = $check["displayName"];
+            $data->displayPictureURL = $check["displayPictureURL"];
 //            array_push($a,$data);
             $a[$i] = $data;
             $i++;
@@ -55,5 +59,3 @@ echo $retrieve_json;
 // Close table DB ---------------------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
 session_write_close();
-
-?>
