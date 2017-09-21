@@ -84,4 +84,18 @@ else if ($dataReceive->getModule() == "Other") {
         require_once("ChangeDisplayPicture.php");
     }
 }
+// TODO:Module Group -----------------------------------------------------------------------------------------------------------------------
+else if ($dataReceive->getModule() == "Group"){
+    if ($dataReceive->getTarget() == "profileAccountDisplayName") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("ChangeDisplayname.php");
+    }elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture"){
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("ChangeDisplayPicture.php");
+    }
+}
 ?>

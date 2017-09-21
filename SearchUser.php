@@ -41,15 +41,15 @@ if ($checkToken == 1) {
                         $Data->message = "You have already request to this user\nPlease wait for this user accept request.";
                     } else if ($row['friendStatus'] == 1) {
                         $Data->status = 200;   // TODO:Are friend
-                        $Data->message = "You are friend";
+                        $Data->message = "You have already are friend";
                     }
                 } elseif ($row['ownerUsername'] == $searchUsername && $row['friendUsername'] == $username) {
                     if ($row['friendStatus'] == 0) {
-                        $Data->status = 201;   // Add friend immidiate
+                        $Data->status = 202;   // Add friend immidiate
                         $Data->message = "This user have already request to add you\nIf you add this user you will become friend.";
                     } else if ($row['friendStatus'] == 1) {
                         $Data->status = 200;   // TODO:Are friend
-                        $Data->message = "You are friend";
+                        $Data->message = "You have already are friend";
                     }
                 } else {
                     $Data->status = 203;       // Can add friend
@@ -57,7 +57,7 @@ if ($checkToken == 1) {
                 }
             }
         } else {
-            $Data->status = 202;               // Can add friend
+            $Data->status = 204;               // Can add friend
             $Data->message = "Wow,Never have friend.";
         }
 
