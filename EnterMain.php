@@ -73,7 +73,6 @@ if ($checkToken == 1) {
 //            $item['displayName'] = isset($check['displayName']) ? null : $check['displayName'];
                 $item['displayName'] = $check['displayName'];
                 $item['displayPictureURL'] = $check['displayPictureURL'];
-//                echo 'frind is you';
                 array_push($a, $item);
 //                        print_r($a);
             }

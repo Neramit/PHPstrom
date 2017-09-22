@@ -53,6 +53,7 @@ if ($username == '' || $email == '' || $password == '') {
 // Retrieve value json format to client --------------------------------------------------------------------------------------------------
 $retrieve_json = json_encode($Data);
 echo $retrieve_json;
+
 // Close table DB & session -----------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
 session_write_close();
