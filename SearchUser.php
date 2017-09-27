@@ -30,6 +30,8 @@ if ($checkToken == 1) {
     } else {
         // Get data --------------------------------------------------------------------------------------------------------------------------------------------------
         require_once('DBconnect.php');
+
+
         $sql = "SELECT ownerUsername,friendUsername,friendStatus FROM friends WHERE ownerUsername = '$username' OR friendUsername = '$username'";
         $query = mysqli_query($con, $sql);
         // Check if

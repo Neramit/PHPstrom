@@ -21,32 +21,26 @@ $Data = new \stdClass();
 // Tell header for content-type is json format ----------------------------------------------------------------------------------------------
 header('Content-Type: application/json');
 
-// Check empty field ------------------------------------------------------------------------------------------------------------------------
-if ($username == '' || $email == '' || $password == '') {
-    $Data->status = 400;
-    $Data->message = "Please fill all field.";
-} else { // Get data from DB table -------------------------------------------------------------------------------------------------------------
-    require_once('DBconnect.php');
-    $sql = "SELECT * FROM users WHERE username='$username' OR email='$email'";
-    $check = mysqli_fetch_array(mysqli_query($con, $sql));
+// Check empty field ------------------------------------------------------------------------------------------------------------------------// Get data from DB table -------------------------------------------------------------------------------------------------------------
+require_once('DBconnect.php');
+$sql = "SELECT * FROM users WHERE BINARY username='$username' OR BINARY email='$email'";
+$check = mysqli_fetch_array(mysqli_query($con, $sql));
 
-    // Check already exist ------------------------------------------------------------------------------------------------------------------
-    if (isset($check)) {
-        $Data->status = 401;
-        $Data->message = "Already register.";
-    } else {  // Input values to database -----------------------------------------------------------------------------------------------------
-        $password = md5($salt . $password);
-        $sql = "INSERT INTO users (username,password,email,displayName) VALUES('$username','$password','$email','$username')";
+// Check already exist ------------------------------------------------------------------------------------------------------------------
+if (isset($check)) {
+    $Data->status = 401;
+    $Data->message = "Already register.";
+} else {  // Input values to database -----------------------------------------------------------------------------------------------------
+    $password = md5($salt . $password);
+    $sql = "INSERT INTO users (username,password,email,displayName) VALUES ('$username','$password','$email','$username')";
 
-        // Check for query succeed? ---------------------------------------------------------------------------------------------------------
-        if (mysqli_query($con, $sql)) {
-            $Data->status = 200;
-            $Data->message = "Register successful.";
-            //$Data -> message = "An account have been create";
-        } else {
-            $Data->status = 401;
-            $Data->message = "Fail to register.";
-        }
+    // Check for query succeed? ---------------------------------------------------------------------------------------------------------
+    if (mysqli_query($con, $sql)) {
+        $Data->status = 200;
+        $Data->message = "Register successful.";
+    } else {
+        $Data->status = 500;
+        $Data->message = "Error: " . $con->error;
     }
 }
 

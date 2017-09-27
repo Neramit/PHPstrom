@@ -37,6 +37,10 @@ if ($dataReceive->getModule() == "Authentication") {
     } else if ($dataReceive->getTarget() == "login") {
         $_SESSION['data'] = $dataReceive->getData();
         require_once("Login.php");
+    }else if ($dataReceive->getTarget() == "firebase") {
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("SendRegistrationID.php");
     }
 }
 // TODO:Module Forgot password --------------------------------------------------------------------------------------------------------------

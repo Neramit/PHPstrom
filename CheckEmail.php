@@ -24,7 +24,7 @@ $Data = new \stdClass();
 require_once('DBconnect.php');
 
 // Check time expired -----------------------------------------------------------------------------------------------------------------------
-$sql = "SELECT timeToExpired FROM gennum_expire_and_email WHERE email='$email'";
+$sql = "SELECT timeToExpired FROM gennum_expire_and_email WHERE BINARY email='$email'";
 $query = mysqli_query($con, $sql);
 
 if(mysqli_num_rows($query)>0){
@@ -42,7 +42,7 @@ if($date->getTimestamp() < $TimeToExpired){
 }
 
 // Check genNum -----------------------------------------------------------------------------------------------------------------------------
-$sql = "SELECT genNum FROM gennum_expire_and_email WHERE email='$email'";
+$sql = "SELECT genNum FROM gennum_expire_and_email WHERE BINARY email='$email'";
 $query = mysqli_query($con, $sql);
 
 if(mysqli_num_rows($query)>0){

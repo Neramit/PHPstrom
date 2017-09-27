@@ -23,7 +23,7 @@ if ($checkToken == 1) {
     $username = $name;
     require_once('DBconnect.php');
     // You request add friend ------------------------------------------------------------------------------------------------------------------
-    $sql = "SELECT * FROM friends INNER JOIN users ON friends.friendUsername=users.username WHERE ownerUsername = '$username'";
+    $sql = "SELECT * FROM friends INNER JOIN users ON BINARY friends.friendUsername=users.username WHERE BINARY ownerUsername = '$username'";
     $query = mysqli_query($con, $sql);
     $a = array();
     if ($query) {
@@ -58,7 +58,7 @@ if ($checkToken == 1) {
         $Data->message = "Query error.";
     }
 // Friend request add you ------------------------------------------------------------------------------------------------------------
-    $sql = "SELECT * FROM friends INNER JOIN users ON friends.ownerUsername=users.username WHERE friendUsername = '$username'";
+    $sql = "SELECT * FROM friends INNER JOIN users ON BINARY friends.ownerUsername=users.username WHERE BINARY friends.friendUsername = '$username'";
     $query = mysqli_query($con, $sql);
     if ($query) {
         if (mysqli_num_rows($query) > 0) {

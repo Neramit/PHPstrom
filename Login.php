@@ -13,6 +13,7 @@ date_default_timezone_set('Asia/Bangkok');
 $jsonR = $_SESSION['data'];
 $username = $jsonR['username'];
 $password = $jsonR['password'];
+//$password = $jsonR['password'];
 /** Password with salt **/
 $Data = new \stdClass();
 $data = new \stdClass();
