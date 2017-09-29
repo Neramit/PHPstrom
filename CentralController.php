@@ -38,6 +38,7 @@ if ($dataReceive->getModule() == "Authentication") {
         $_SESSION['data'] = $dataReceive->getData();
         require_once("Login.php");
     }else if ($dataReceive->getTarget() == "firebase") {
+        $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("SendRegistrationID.php");
@@ -90,11 +91,11 @@ else if ($dataReceive->getModule() == "Other") {
 }
 // TODO:Module Group -----------------------------------------------------------------------------------------------------------------------
 else if ($dataReceive->getModule() == "Group"){
-    if ($dataReceive->getTarget() == "profileAccountDisplayName") {
+    if ($dataReceive->getTarget() == "createGroup") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
-        require_once("ChangeDisplayname.php");
+        require_once("CreateGroup.php");
     }elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture"){
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();

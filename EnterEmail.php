@@ -12,8 +12,12 @@ date_default_timezone_set('Asia/Bangkok');
 // Tell header for content-type is json format ----------------------------------------------------------------------------------------------
 header('Content-Type: application/json');
 
+require("PHPMailer_v5.0.2/class.phpmailer.php");
+//require './vendor/autoload.php';
+//Load composer's autoloader
+//require 'PHPMailer/PHPMailerAutoload.php';
 //require("PHPMailer/class.phpmailer.php"); // path to the PHPMailer class.
-require("PHPMailer/PHPMailerAutoload.php"); // path to the PHPMailer class.
+//require("PHPMailer/PHPMailerAutoload.php"); // path to the PHPMailer class.
 
 // Declare variables ------------------------------------------------------------------------------------------------------------------------
 $jsonR = $_SESSION['data'];
@@ -50,7 +54,7 @@ $mail->Username = "chatchat.developer@gmail.com";
 //Password to use for SMTP authentication
 $mail->Password = "ARsoft56113039-4";
 //Set who the message is to be sent from
-$mail->setFrom('chatchat.developer@gmail.com', 'Chat Chat Application');
+$mail->setFrom('chatchat.developer@gmail.com', 'Chat Chat Application - Reset password');
 //Set who the message is to be sent to
 $mail->addAddress($email, 'Chat Chat customer');
 //Set the subject line
@@ -110,5 +114,3 @@ echo $retrieve_json;
 // Close table DB & session -----------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
 session_write_close();
-
-?>

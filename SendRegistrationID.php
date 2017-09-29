@@ -15,7 +15,7 @@ header('Content-Type: application/json');
 // Declare variables -------------------------------------------------------------------------------------------------------------------------------------------------
 $token = $_SESSION['token'];
 $jsonR = $_SESSION['data'];
-$registrationID = $_SESSION['registrationID'];
+$registrationID = $jsonR['displayPictureURL'];
 
 $Data = new \stdClass();
 $data = new \stdClass();

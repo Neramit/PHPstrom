@@ -17,6 +17,7 @@ $token = $_SESSION['token'];
 $Data = new stdClass();
 $data = new stdClass();
 $i = 0;
+$usernameGetID = "";
 
 require_once('CheckToken.php');
 if ($checkToken == 1) {
@@ -45,7 +46,24 @@ if ($checkToken == 1) {
 //            $item['displayName'] = isset($check['displayName']) ? null : $check['displayName'];
                 $item['displayName'] = $check['displayName'];
                 $item['displayPictureURL'] = $check['displayPictureURL'];
+                $item['friendRegistrationID'] = $check['friendRegistrationID'];
 
+                // ADD --------------------------------------------------------------------------------------------------------------
+                $usernameGetID = $item['friendUsername'];
+                $sql2 = "SELECT registrationID FROM token_username WHERE BINARY username = '$usernameGetID'";
+                $query2 = mysqli_query($con, $sql2);
+                if ($query2) {
+                    if (mysqli_num_rows($query2) == 1) {
+                        while ($check2 = mysqli_fetch_assoc($query2)) {
+                            $item['friendRegistrationID'] = $check2['registrationID'];
+//                    array_push($a, $item);
+                        }
+                    }
+                } else {
+                    $Data->status = 500;
+                    $Data->message = "Query error.";
+                }
+                // ADD --------------------------------------------------------------------------------------------------------------
                 array_push($a, $item);
 //                print_r($a);
             }
@@ -62,7 +80,6 @@ if ($checkToken == 1) {
     $query = mysqli_query($con, $sql);
     if ($query) {
         if (mysqli_num_rows($query) > 0) {
-//            $a = array();
             $index = 0;
             while ($check = mysqli_fetch_assoc($query)) {
                 $item['ownerUsername'] = $check['ownerUsername'];
@@ -73,6 +90,23 @@ if ($checkToken == 1) {
 //            $item['displayName'] = isset($check['displayName']) ? null : $check['displayName'];
                 $item['displayName'] = $check['displayName'];
                 $item['displayPictureURL'] = $check['displayPictureURL'];
+
+                // ADD --------------------------------------------------------------------------------------------------------------
+                $usernameGetID = $item['ownerUsername'];
+                $sql2 = "SELECT registrationID FROM token_username WHERE BINARY username = '$usernameGetID'";
+                $query2 = mysqli_query($con, $sql2);
+                if ($query2) {
+                    if (mysqli_num_rows($query2) == 1) {
+                        while ($check2 = mysqli_fetch_assoc($query2)) {
+                            $item['friendRegistrationID'] = $check2['registrationID'];
+//                    array_push($a, $item);
+                        }
+                    }
+                } else {
+                    $Data->status = 500;
+                    $Data->message = "Query error.";
+                }
+                // ADD --------------------------------------------------------------------------------------------------------------
                 array_push($a, $item);
 //                        print_r($a);
             }
@@ -80,6 +114,20 @@ if ($checkToken == 1) {
             $Data->status = 201;
             $Data->message = "Don't have friend.";
         }
+//        $sql = "SELECT friendRegistrationID FROM token_username WHERE BINARY username = '$usernameGetID'";
+//        $query = mysqli_query($con, $sql);
+//        if ($query) {
+//            if (mysqli_num_rows($query) == 1) {
+//                while ($check = mysqli_fetch_assoc($query)) {
+//                    echo "test";
+//                    $item['friendRegistrationID'] = $check['friendRegistrationID'];
+////                    array_push($a, $item);
+//                }
+//            }
+//        }else {
+//            $Data->status = 500;
+//            $Data->message = "Query error.";
+//        }
     } else {
         $Data->status = 500;
         $Data->message = "Query error.";

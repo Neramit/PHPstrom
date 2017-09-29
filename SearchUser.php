@@ -19,6 +19,8 @@ $token = $_SESSION['token'];
 $Data = new \stdClass();
 $data = new \stdClass();
 
+$Data->status = 203;       // Can add friend
+$Data->message = "Normally,Never have contact with this user.";
 //Check Token --------------------------------------------------------------------------------------------------------------------------------------------------------
 require_once('CheckToken.php');
 if ($checkToken == 1) {
@@ -31,12 +33,12 @@ if ($checkToken == 1) {
         // Get data --------------------------------------------------------------------------------------------------------------------------------------------------
         require_once('DBconnect.php');
 
-
         $sql = "SELECT ownerUsername,friendUsername,friendStatus FROM friends WHERE ownerUsername = '$username' OR friendUsername = '$username'";
         $query = mysqli_query($con, $sql);
         // Check if
         if (mysqli_num_rows($query) >= 1) {
             while ($row = mysqli_fetch_assoc($query)) {
+//                echo $row['ownerUsername'].$row['friendUsername'];
                 if ($row['ownerUsername'] == $username && $row['friendUsername'] == $searchUsername) {
                     if ($row['friendStatus'] == 0) {
                         $Data->status = 201;   // TODO:Can't add friend
@@ -53,33 +55,33 @@ if ($checkToken == 1) {
                         $Data->status = 200;   // TODO:Are friend
                         $Data->message = "You have already are friend";
                     }
-                } else {
-                    $Data->status = 203;       // Can add friend
-                    $Data->message = "Normally,Never have contact with this user.";
                 }
+//                else {
+//                    $Data->status = 203;       // Can add friend
+//                    $Data->message = "Normally,Never have contact with this user.";
+//                }
             }
         } else {
             $Data->status = 204;               // Can add friend
             $Data->message = "Wow,Never have friend.";
         }
-
-        // Get image URL
-        $sql = "SELECT displayName,displayPictureURL FROM users WHERE BINARY username = '$searchUsername'";
-        $query = mysqli_query($con, $sql);
-        if (mysqli_num_rows($query) == 1) {
-            while ($row = mysqli_fetch_assoc($query)) {
-                if ($row["displayName"] == null) {
-                    $data->displayName = $searchUsername;
-                } else
-                    $data->displayName = $row["displayName"];
-                $data->displayPictureURL = $row["displayPictureURL"];
-                $Data->data = $data;
-            }
-            // Not have username -------------------------------------------------------------------------------------------------------------------------------------
-        } else {
-            $Data->status = 402;
-            $Data->message = "Not have this user.";
+    }
+    // Get image URL
+    $sql = "SELECT displayName,displayPictureURL FROM users WHERE BINARY username = '$searchUsername'";
+    $query = mysqli_query($con, $sql);
+    if (mysqli_num_rows($query) == 1) {
+        while ($row = mysqli_fetch_assoc($query)) {
+            if ($row["displayName"] == null) {
+                $data->displayName = $searchUsername;
+            } else
+                $data->displayName = $row["displayName"];
+            $data->displayPictureURL = $row["displayPictureURL"];
+            $Data->data = $data;
         }
+        // Not have username -------------------------------------------------------------------------------------------------------------------------------------
+    } else {
+        $Data->status = 402;
+        $Data->message = "Not have this user.";
     }
 // Wrong token ------------------------------------------------------------------------------------------------------------------------------------------------------
 } else {

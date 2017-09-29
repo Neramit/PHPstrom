@@ -13,6 +13,7 @@ date_default_timezone_set('Asia/Bangkok');
 $jsonR = $_SESSION['data'];
 $username = $jsonR['username'];
 $password = $jsonR['password'];
+$registrationID = $jsonR['registrationID'];
 //$password = $jsonR['password'];
 /** Password with salt **/
 $Data = new \stdClass();
@@ -35,9 +36,10 @@ if ($username == '' || $password == '') {
         $check = mysqli_fetch_array(mysqli_query($con, $sql));
         if (isset($check)) {
             $date = new DateTime();
-            $token = md5($date->getTimestamp() . $username);                                        // Token = MD5(Timestamp + username)
+            $timeStamp = $date->getTimestamp();
+            $token = md5($timeStamp . $username);                                        // Token = MD5(Timestamp + username)
 
-            $sql = "UPDATE token_username SET token = '$token' WHERE BINARY username='$username'";
+            $sql = "UPDATE token_username SET token = '$token',registrationID = '$registrationID',logged = '$timeStamp' WHERE BINARY username='$username'";
             if ($con->query($sql) == TRUE) {
                 $Data->status = 200;
                 $Data->message = "Logged in!";
@@ -49,7 +51,7 @@ if ($username == '' || $password == '') {
         } else {
             $date = new DateTime();
             $token = md5($date->getTimestamp() . $username);
-            $sql = "INSERT INTO token_username (username,token) VALUES('$username','$token')";
+            $sql = "INSERT INTO token_username (username,token,registrationID,logged) VALUES ('$username','$token','$registrationID','$timeStamp')";
             // Check for query succeed? -----------------------------------------------------------------------------------------------------
             if (mysqli_query($con, $sql)) {
                 $Data->status = 200;
