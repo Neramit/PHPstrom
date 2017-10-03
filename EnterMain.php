@@ -29,7 +29,7 @@ if ($checkToken == 1) {
     $a = array();
     if ($query) {
         if (mysqli_num_rows($query) > 0) {
-            $index = 0;
+//            $index = 0;
             while ($check = mysqli_fetch_assoc($query)) {
 //            $data->ownerUsername = $check['ownerUsername'];
 //            $data->friendUsername = $check['friendUsername'];
@@ -80,7 +80,7 @@ if ($checkToken == 1) {
     $query = mysqli_query($con, $sql);
     if ($query) {
         if (mysqli_num_rows($query) > 0) {
-            $index = 0;
+//            $index = 0;
             while ($check = mysqli_fetch_assoc($query)) {
                 $item['ownerUsername'] = $check['ownerUsername'];
                 $item['friendUsername'] = $check['friendUsername'];

@@ -22,13 +22,21 @@ header('Content-Type: application/json');
 
 // Update password -------------------------------------------------------------------------------------------------------------------------
 require_once('DBconnect.php');
-$sql = "UPDATE users SET password = '$password' WHERE email='$email'";
-if ($con->query($sql) == TRUE) {
-    $Data->status = 200;
-    $Data->message = "Password has changed";
+$sql = "UPDATE users SET password = '$password' WHERE email = '$email'";
+if (mysqli_query($con, $sql)) {
+    $sql = "DELETE FROM gennum_expire_and_email WHERE email = '$email'";
+    if ($con->query($sql) === TRUE) {
+        $Data->status = 200;
+        $Data->message = "Password has changed.";
+    } else {
+        $Data->status = 500;
+        $Data->message = "Error change password.";
+        print_r($con->error);
+    }
 } else {
     $Data->status = 501;
-    $Data->message = "Error change password ";
+    $Data->message = "Error change password.";
+    print_r($con->error);
 }
 // Retrieve value json format to client --------------------------------------------------------------------------------------------------
 $retrieve_json = json_encode($Data);
@@ -36,5 +44,3 @@ echo $retrieve_json;
 // Close table DB & session -----------------------------------------------------------------------------------------------------------------
 mysqli_close($con);
 session_write_close();
-
-?>

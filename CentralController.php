@@ -37,14 +37,13 @@ if ($dataReceive->getModule() == "Authentication") {
     } else if ($dataReceive->getTarget() == "login") {
         $_SESSION['data'] = $dataReceive->getData();
         require_once("Login.php");
-    }else if ($dataReceive->getTarget() == "firebase") {
+    } else if ($dataReceive->getTarget() == "firebase") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("SendRegistrationID.php");
     }
-}
-// TODO:Module Forgot password --------------------------------------------------------------------------------------------------------------
+} // TODO:Module Forgot password --------------------------------------------------------------------------------------------------------------
 else if ($dataReceive->getModule() == "Forgot password") {
     if ($dataReceive->getTarget() == "enterEmail") {
         $_SESSION['data'] = $dataReceive->getData();
@@ -56,8 +55,7 @@ else if ($dataReceive->getModule() == "Forgot password") {
         $_SESSION['data'] = $dataReceive->getData();
         require_once("ResetPassword.php");
     }
-}
-// TODO:Module Friend -----------------------------------------------------------------------------------------------------------------------
+} // TODO:Module Friend -----------------------------------------------------------------------------------------------------------------------
 else if ($dataReceive->getModule() == "Friend") {
     if ($dataReceive->getTarget() == "friendTabEnter") {
         $dataReceive->setToken($jsonR['token']);
@@ -74,33 +72,39 @@ else if ($dataReceive->getModule() == "Friend") {
         $_SESSION['data'] = $dataReceive->getData();
         require_once("AddFriend.php");
     }
-}
-// TODO:Module Other -----------------------------------------------------------------------------------------------------------------------
+} // TODO:Module Other -----------------------------------------------------------------------------------------------------------------------
 else if ($dataReceive->getModule() == "Other") {
     if ($dataReceive->getTarget() == "profileAccountDisplayName") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("ChangeDisplayname.php");
-    }elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture"){
+    } elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("ChangeDisplayPicture.php");
+    } elseif ($dataReceive->getTarget() == "deleteAccount") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        require_once("DeleteAccount.php");
     }
-}
-// TODO:Module Group -----------------------------------------------------------------------------------------------------------------------
-else if ($dataReceive->getModule() == "Group"){
+} // TODO:Module Group -----------------------------------------------------------------------------------------------------------------------
+else if ($dataReceive->getModule() == "Group") {
     if ($dataReceive->getTarget() == "createGroup") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("CreateGroup.php");
-    }elseif ($dataReceive->getTarget() == "profileAccountDisplayPicture"){
+    } elseif ($dataReceive->getTarget() == "getGroupUID") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
-        require_once("ChangeDisplayPicture.php");
+        require_once("GetGroupUID.php");
+    } else if ($dataReceive->getTarget() == "groupTabEnter") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        require_once("EnterGroup.php");
     }
 }
 ?>
