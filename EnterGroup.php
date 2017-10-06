@@ -16,47 +16,72 @@ header('Content-Type: application/json');
 $token = $_SESSION['token'];
 $Data = new stdClass();
 $data = new stdClass();
-
+$a = array();
+//  BINARY group_member.memberUsername = '$username' OR
 require_once('CheckToken.php');
 if ($checkToken == 1) {
     $username = $name;
     require_once('DBconnect.php');
-    // You request add friend ------------------------------------------------------------------------------------------------------------------
-    $sql = "SELECT * FROM group_member INNER JOIN groups ON group_member.groupUID = groups.groupUID WHERE BINARY group_member.memberUsername = '$username' OR groups.groupOwner = '$username'";
+    // You are group owner ---------------------------------------------------------------------------------------------------------------------
+    $sql = "SELECT * FROM groups WHERE BINARY groupOwner = '$username'";
     $query = mysqli_query($con, $sql);
-    $a = array();
     if ($query) {
         if (mysqli_num_rows($query) > 0) {
             while ($check = mysqli_fetch_assoc($query)) {
-                if ($check['groupOwner'] == $username) {
-                    $item['groupStatus'] = 1;
-                } else
-                    $item['groupStatus'] = $check['memberStatus'];
+                $item['groupStatus'] = 2;
                 $item['groupUID'] = $check['groupUID'];
+                $item['groupOwner'] = $check['groupOwner'];
                 $item['groupName'] = $check['groupName'];
                 $item['groupImageURL'] = $check['groupImageURL'];
                 $item['groupMemberNum'] = $check['groupMemberNum'];
                 array_push($a, $item);
-            }// Combine to $Data
-            $jsonObject['data'] = $a;
-            $jsonObject['status'] = 200;
-            $jsonObject['message'] = "Get data successful.";
-            $Data = $jsonObject;
+            }
         } else {
             $jsonObject['status'] = 201;
             $jsonObject['message'] = "Not have data1.";
             $Data = $jsonObject;
         }
+        // You are group member ---------------------------------------------------------------------------------------------------------------------
+        $sql = "SELECT * FROM group_member INNER JOIN groups ON groups.groupUID = group_member.groupUID WHERE BINARY group_member.memberUsername = '$username'";
+        $query = mysqli_query($con, $sql);
+
+        if ($query) {
+            if (mysqli_num_rows($query) > 0) {
+                while ($check = mysqli_fetch_assoc($query)) {
+                    $item['groupStatus'] = $check['memberStatus'];
+                    $item['groupUID'] = $check['groupUID'];
+                    $item['groupOwner'] = $check['groupOwner'];
+                    $item['groupName'] = $check['groupName'];
+                    $item['groupImageURL'] = $check['groupImageURL'];
+                    $item['groupMemberNum'] = $check['groupMemberNum'];
+                    array_push($a, $item);
+                }
+                // Combine to $Data
+                $jsonObject['data'] = $a;
+                $jsonObject['status'] = 200;
+                $jsonObject['message'] = "Get data successful.";
+                $Data = $jsonObject;
+            } else {
+                // Combine to $Data
+                $jsonObject['data'] = $a;
+                $jsonObject['status'] = 200;
+                $jsonObject['message'] = "Get data successful.";
+                $Data = $jsonObject;
+            }
+        } else {
+            $jsonObject['status'] = 201;
+            $jsonObject['message'] = "Not have data4.";
+            $Data = $jsonObject;
+        }
     } else {
-        $jsonObject['status'] = 201;
-        $jsonObject['message'] = "Not have data2." . mysqli_error($con);
+        $jsonObject['status'] = 401;
+        $jsonObject['message'] = "Not have data2.";
         $Data = $jsonObject;
     }
 } else {
     $Data->status = 400;
     $Data->message = "Wrong token.";
 }
-
 
 // Retrieve value json format to client --------------------------------------------------------------------------------------------------------
 $retrieve_json = json_encode($Data);

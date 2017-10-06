@@ -71,6 +71,16 @@ else if ($dataReceive->getModule() == "Friend") {
         $_SESSION['token'] = $dataReceive->getToken();
         $_SESSION['data'] = $dataReceive->getData();
         require_once("AddFriend.php");
+    }else if ($dataReceive->getTarget() == "acceptFriendRequest") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("AcceptFriend.php");
+    }else if ($dataReceive->getTarget() == "declineFriendRequest") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("DeclineFriend.php");
     }
 } // TODO:Module Other -----------------------------------------------------------------------------------------------------------------------
 else if ($dataReceive->getModule() == "Other") {
@@ -105,6 +115,24 @@ else if ($dataReceive->getModule() == "Group") {
         $dataReceive->setToken($jsonR['token']);
         $_SESSION['token'] = $dataReceive->getToken();
         require_once("EnterGroup.php");
+    } else if ($dataReceive->getTarget() == "joinGroupRequest") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("JoinGroup.php");
+    } else if ($dataReceive->getTarget() == "ignoreGroupRequest") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("IgnoreGroup.php");
+    }
+} // TODO:Module Group Detail ----------------------------------------------------------------------------------------------------------------
+else if ($dataReceive->getModule() == "GroupDetail") {
+    if ($dataReceive->getTarget() == "enterGroupDetail") {
+        $dataReceive->setToken($jsonR['token']);
+        $_SESSION['token'] = $dataReceive->getToken();
+        $_SESSION['data'] = $dataReceive->getData();
+        require_once("enterGroupDetail.php");
     }
 }
 ?>

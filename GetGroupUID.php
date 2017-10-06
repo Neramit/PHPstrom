@@ -41,15 +41,28 @@ if ($checkToken == 1) {
                 $i = 1;  // --- Var '$i' for count not add first member ---//
                 foreach ($groupMember as $key => $val) {
                     $friendUsername = $val['friendUsername'];
-                    $sql = "INSERT INTO group_member (memberUsername,groupUID) VALUES ('$friendUsername','$data->groupUID')";
-                    if ($i!=1) {
-                        mysqli_query($con, $sql);
+                    $ownerUsername = $val['ownerUsername'];
+                    if ($friendUsername != $username) {
+                        $sql = "INSERT INTO group_member (memberUsername,groupUID) VALUES ('$friendUsername','$data->groupUID')";
+                        if ($i != 1) {
+                            mysqli_query($con, $sql);
 //                        if (mysqli_query($con, $sql))
 //                            print_r("Success -> ".$con->error);
 //                        else
 //                            print_r("Fail -> ".$con->error);
+                        }
+                        $i++;
+                    }else if($ownerUsername == $username){
+                        $sql = "INSERT INTO group_member (memberUsername,groupUID,memberStatus) VALUES ('$ownerUsername','$data->groupUID',2)";
+                        if ($i != 1) {
+                            mysqli_query($con, $sql);
+//                        if (mysqli_query($con, $sql))
+//                            print_r("Success -> ".$con->error);
+//                        else
+//                            print_r("Fail -> ".$con->error);
+                        }
+                        $i++;
                     }
-                    $i++;
                 }
             }
             $Data->data = $data;
